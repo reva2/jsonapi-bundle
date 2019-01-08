@@ -1,0 +1,28 @@
+{
+    "name": "reva2/jsonapi-bundle",
+    "description": "JSON API support for your Symfony REST API",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sergey Revenko",
+            "email": "dedsemen@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^5.6 || ^7.0",
+        "symfony/framework-bundle": "^4.0",
+        "reva2/jsonapi": "^1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Reva2\\JsonApiBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Reva2\\JsonApiBundle\\Tests\\": "test/"
+        }
+    }
+}

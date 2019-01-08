@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="reva2_jsonapi.factory" class="Reva2\JsonApi\Factories\Factory" />
+
+        <service id="reva2_jsonapi.callback_resolver" class="Reva2\JsonApiBundle\CallbackResolver">
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="reva2_jsonapi.data_parser" class="Reva2\JsonApi\Decoders\DataParser">
+            <argument index="0" type="service" id="reva2_jsonapi.metadata_factory" />
+            <argument index="1" type="service" id="reva2_jsonapi.callback_resolver" />
+        </service>
+
+        <service id="reva2_jsonapi.validator" class="Reva2\JsonApi\Services\ValidationService">
+            <argument type="service" id="validator" />
+        </service>
+
+        <service id="reva2_jsonapi.metadata_factory" class="Reva2\JsonApi\Decoders\Mapping\Factory">
+            <argument index="0" type="service" id="reva2_jsonapi.metadata_loader" />
+            <argument index="1" type="service" id="reva2_jsonapi.metadata_cache" />
+        </service>
+
+        <service id="reva2_jsonapi.metadata_cache" class="Reva2\JsonApi\Decoders\Mapping\Cache\DoctrineCache">
+            <argument index="0" type="service" id="reva2_jsonapi.cache" />
+        </service>
+
+        <service id="reva2_jsonapi.metadata_loader" class="Reva2\JsonApi\Decoders\Mapping\Loader\AnnotationLoader">
+            <argument index="0" type="service" id="reva2_jsonapi.reader" />
+        </service>
+
+        <service id="reva2_jsonapi.reader" class="Doctrine\Common\Annotations\CachedReader">
+            <argument index="0" type="service" id="reva2_jsonapi.inner_reader" />
+            <argument index="1" type="service" id="reva2_jsonapi.cache" />
+            <argument index="2">%kernel.debug%</argument>
+        </service>
+        <service id="reva2_jsonapi.inner_reader" class="Doctrine\Common\Annotations\AnnotationReader" />
+
+        <service id="reva2_jsonapi.registry" class="Reva2\JsonApi\Services\JsonApiRegistry" />
+
+        <service id="reva2_jsonapi.jsonapi_encoder" class="Reva2\JsonApi\Encoder\Encoder">
+            <tag name="reva2_jsonapi.encoder" alias="jsonapi" />
+        </service>
+
+        <service id="reva2_jsonapi.jsonapi_decoder" class="Reva2\JsonApi\Decoders\RequestDecoder">
+            <tag name="reva2_jsonapi.decoder" alias="jsonapi" />
+        </service>
+
+        <service id="reva2_jsonapi.schemas_container" class="Reva2\JsonApi\Schema\Container">
+            <argument index="0" type="service" id="reva2_jsonapi.factory" />
+        </service>
+
+        <service id="reva2_jsonapi.cache_adapter_void" class="Doctrine\Common\Cache\VoidCache" />
+        <service id="reva2_jsonapi.cache_adapter_filesystem" class="Doctrine\Common\Cache\FilesystemCache" />
+
+        <service id="Reva2\JsonApi\Factories\Factory" alias="reva2_jsonapi.factory" public="false" />
+    </services>
+</container>
