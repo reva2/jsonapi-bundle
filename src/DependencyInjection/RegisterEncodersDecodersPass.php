@@ -113,7 +113,7 @@ class RegisterEncodersDecodersPass implements CompilerPassInterface
 
             $definition->addMethodCall(
                 'registerEncoder',
-                [new ServiceClosureArgument(new Reference($id)), $params[0]['alias']]
+                [$params[0]['alias'], new ServiceClosureArgument(new Reference($id))]
             );
         }
     }
@@ -158,7 +158,7 @@ class RegisterEncodersDecodersPass implements CompilerPassInterface
 
             $definition->addMethodCall(
                 'registerDecoder',
-                [new ServiceClosureArgument(new Reference($id)), $params[0]['alias']]
+                [$params[0]['alias'], new ServiceClosureArgument(new Reference($id))]
             );
         }
     }

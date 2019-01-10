@@ -33,8 +33,8 @@ class Reva2JsonApiExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $this->registerCache($config, $container);
-
-
+        $this->configureListener($config, $container);
+        $this->cofigureSchemaContainer($config, $container);
     }
 
     /**
@@ -72,5 +72,29 @@ class Reva2JsonApiExtension extends Extension
         }
 
         $container->setDefinition('reva2_jsonapi.cache', $adapterDef);
+    }
+
+    /**
+     * Configure event listener that build request environment
+     *
+     * @param array $config
+     * @param ContainerBuilder $container
+     */
+    private function configureListener(array $config, ContainerBuilder $container)
+    {
+        $definition = $container->getDefinition('reva2_jsonapi.listener');
+        $definition->setArgument(
+            2,
+            [
+                'decoders' => $config['decoders'],
+                'encoders' => $config['encoders']
+            ]
+        );
+    }
+
+    private function cofigureSchemaContainer(array $config, ContainerBuilder $container)
+    {
+        $definition = $container->getDefinition('reva2_jsonapi.schemas_container');
+        $definition->setArgument(1, $config['schemas']);
     }
 }

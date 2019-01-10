@@ -31,8 +31,24 @@ class Configuration implements ConfigurationInterface
                     ->info('Path to cache directory for filesystem metadata cache adapter')
                     ->defaultValue('%kernel.cache_dir%/reva2/jsonapi')
                     ->end()
-                ->arrayNode('schemas')
-                    ->info('JSON API schemas');
+                ->variableNode('schemas')
+                    ->info('JSON API schemas')
+                    ->defaultValue([])
+                    ->end()
+                ->variableNode('decoders')
+                    ->info('Decoders mapping')
+                    ->defaultValue([
+                        'application/vnd.api+json' => 'jsonapi',
+                        'application/json' => 'jsonapi'
+                    ])
+                    ->end()
+                ->variableNode('encoders')
+                    ->info('Encoders mapping')
+                    ->defaultValue([
+                        'application/vnd.api+json' => 'jsonapi',
+                        'application/json' => 'jsonapi'
+                    ])
+                    ->end();
 
         return $treeBuilder;
     }
