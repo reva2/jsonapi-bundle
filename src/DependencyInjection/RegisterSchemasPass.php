@@ -10,8 +10,12 @@
 
 namespace Reva2\JsonApiBundle\DependencyInjection;
 
+use Neomerx\JsonApi\Contracts\Schema\SchemaProviderInterface;
+use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @package Reva2\JsonApiBundle\DependencyInjection
@@ -41,6 +45,7 @@ class RegisterSchemasPass implements CompilerPassInterface
     /**
      * @inheritdoc
      * @param ContainerBuilder $container
+     * @throws \ReflectionException
      */
     public function process(ContainerBuilder $container)
     {
@@ -50,6 +55,39 @@ class RegisterSchemasPass implements CompilerPassInterface
 
         $definition = $container->getDefinition($this->containerService);
 
+        foreach ($container->findTaggedServiceIds($this->schemaTag) as $id => $params) {
+            $def = $container->getDefinition($id);
 
+            $class = $def->getClass();
+
+            if (!$r = $container->getReflectionClass($class)) {
+                throw new InvalidArgumentException(sprintf(
+                    "Class '%s' used for service '%s' cannot be found",
+                    $class,
+                    $id
+                ));
+            }
+
+            if (!$r->isSubclassOf(SchemaProviderInterface::class)) {
+                throw new \InvalidArgumentException(sprintf(
+                    "Service '%s' must implement interface '%s'",
+                    $id,
+                    SchemaProviderInterface::class
+                ));
+            }
+
+            if (!isset($params[0]['resource'])) {
+                throw new InvalidArgumentException(sprintf(
+                    "Service '%s' must define the 'resource' attribute on '%s' tag",
+                    $id,
+                    $this->schemaTag
+                ));
+            }
+
+            $definition->addMethodCall(
+                'register',
+                [$params[0]['resource'], new ServiceClosureArgument(new Reference($id))]
+            );
+        }
     }
 }
