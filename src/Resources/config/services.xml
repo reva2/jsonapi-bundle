@@ -74,6 +74,11 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
+        <service id="reva2_jsonapi.exception_listener" class="Reva2\JsonApiBundle\EventListener\ExceptionListener">
+            <argument index="0" type="service" id="reva2_jsonapi.jsonapi_encoder" />
+            <tag name="kernel.event_listener" event="kernel.exception" />
+        </service>
+
         <service id="Reva2\JsonApi\Factories\Factory" alias="reva2_jsonapi.factory" public="false" />
         <service id="Reva2\JsonApi\Contracts\Services\JsonApiServiceInterface" alias="reva2_jsonapi.service" public="true" />
     </services>
