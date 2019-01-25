@@ -50,10 +50,7 @@ class CallbackResolver implements CallbackResolverInterface
         $callback = $name;
         if (preg_match(static::SERVICE_PATTERN, $name)) {
             list($service, $method) = explode(':', $name, 2);
-
-            if (isset($this->container[$service])) {
-                $callback = [$this->container->get($service), $method];
-            }
+            $callback = [$this->container->get($service), $method];
         } elseif (preg_match(static::STATIC_METHOD_PATTERN, $name)) {
             $callback = explode('::', $name, 2);
         }
