@@ -81,5 +81,6 @@
 
         <service id="Reva2\JsonApi\Factories\Factory" alias="reva2_jsonapi.factory" public="false" />
         <service id="Reva2\JsonApi\Contracts\Services\JsonApiServiceInterface" alias="reva2_jsonapi.service" public="true" />
+        <service id="Neomerx\JsonApi\Contracts\Encoder\EncoderInterface" alias="reva2_jsonapi.jsonapi_encoder" public="true" />
     </services>
 </container>
