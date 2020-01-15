@@ -17,9 +17,9 @@ class Configuration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder('reva2_jsonapi');
 
-        $rootNode = $treeBuilder->root('reva2_jsonapi');
+        $rootNode = $treeBuilder->getRootNode();
         $rootNode
             ->children()
                 ->enumNode('cache_adapter')

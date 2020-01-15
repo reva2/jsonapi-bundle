@@ -13,7 +13,7 @@ namespace Reva2\JsonApiBundle\EventListener;
 use Neomerx\JsonApi\Contracts\Encoder\EncoderInterface;
 use Neomerx\JsonApi\Exceptions\JsonApiException;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 
 /**
  * JSON API exception handler
@@ -41,11 +41,11 @@ class ExceptionListener
     /**
      * Converts JSON API exception to response in JSON API format
      *
-     * @param GetResponseForExceptionEvent $event
+     * @param ExceptionEvent $event
      */
-    public function onKernelException(GetResponseForExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event)
     {
-        $exception = $event->getException();
+        $exception = $event->getThrowable();
 
         if ($exception instanceof JsonApiException) {
             $response = new Response(
