@@ -33,20 +33,11 @@
             <argument index="1" type="service" id="reva2_jsonapi.metadata_cache" />
         </service>
 
-        <service id="reva2_jsonapi.metadata_cache" class="Reva2\JsonApi\Decoders\Mapping\Cache\DoctrineCache">
+        <service id="reva2_jsonapi.metadata_cache" class="Reva2\JsonApi\Decoders\Mapping\Cache\PsrCache">
             <argument index="0" type="service" id="reva2_jsonapi.cache" />
         </service>
 
-        <service id="reva2_jsonapi.metadata_loader" class="Reva2\JsonApi\Decoders\Mapping\Loader\AnnotationLoader">
-            <argument index="0" type="service" id="reva2_jsonapi.reader" />
-        </service>
-
-        <service id="reva2_jsonapi.reader" class="Doctrine\Common\Annotations\CachedReader">
-            <argument index="0" type="service" id="reva2_jsonapi.inner_reader" />
-            <argument index="1" type="service" id="reva2_jsonapi.cache" />
-            <argument index="2">%kernel.debug%</argument>
-        </service>
-        <service id="reva2_jsonapi.inner_reader" class="Doctrine\Common\Annotations\AnnotationReader" />
+        <service id="reva2_jsonapi.metadata_loader" class="Reva2\JsonApi\Decoders\Mapping\Loader\AttributeLoader" />
 
         <service id="reva2_jsonapi.registry" class="Reva2\JsonApi\Services\JsonApiRegistry" />
 
@@ -65,12 +56,11 @@
             <argument index="0" type="service" id="reva2_jsonapi.factory" />
         </service>
 
-        <service id="reva2_jsonapi.cache_adapter_void" class="Doctrine\Common\Cache\VoidCache" />
-        <service id="reva2_jsonapi.cache_adapter_filesystem" class="Doctrine\Common\Cache\FilesystemCache" />
+        <service id="reva2_jsonapi.cache_adapter_void" class="Symfony\Component\Cache\Adapter\ArrayAdapter" />
+        <service id="reva2_jsonapi.cache_adapter_filesystem" class="Symfony\Component\Cache\Adapter\FilesystemAdapter" />
 
         <service id="reva2_jsonapi.listener" class="Reva2\JsonApi\EventListener\ApiListener">
-            <argument index="0" type="service" id="reva2_jsonapi.reader" />
-            <argument index="1" type="service" id="reva2_jsonapi.factory" />
+            <argument index="0" type="service" id="reva2_jsonapi.factory" />
             <tag name="kernel.event_subscriber" />
         </service>
 
@@ -79,7 +69,9 @@
             <tag name="kernel.event_listener" event="kernel.exception" />
         </service>
 
-        <service id="Reva2\JsonApi\Factories\Factory" alias="reva2_jsonapi.factory" public="false" />
+        <service id="Reva2\JsonApi\Factories\Factory" alias="reva2_jsonapi.factory" />
+        <service id="Neomerx\JsonApi\Contracts\Schema\SchemaFactoryInterface" alias="reva2_jsonapi.factory" />
+
         <service id="Reva2\JsonApi\Contracts\Services\JsonApiServiceInterface" alias="reva2_jsonapi.service" public="true" />
         <service id="Neomerx\JsonApi\Contracts\Encoder\EncoderInterface" alias="reva2_jsonapi.jsonapi_encoder" public="true" />
     </services>

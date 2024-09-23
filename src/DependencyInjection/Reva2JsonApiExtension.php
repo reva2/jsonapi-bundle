@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
  */
 class Reva2JsonApiExtension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $locator = new FileLocator(__DIR__ .'/../Resources/config');
         $loader = new XmlFileLoader($container, $locator);
@@ -34,14 +34,14 @@ class Reva2JsonApiExtension extends Extension
 
         $this->registerCache($config, $container);
         $this->configureListener($config, $container);
-        $this->cofigureSchemaContainer($config, $container);
+        $this->configureSchemaContainer($config, $container);
     }
 
     /**
      * @inheritdoc
      * @return string
      */
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'reva2_jsonapi';
     }
@@ -52,12 +52,14 @@ class Reva2JsonApiExtension extends Extension
      * @param array $config
      * @param ContainerBuilder $container
      */
-    private function registerCache(array $config, ContainerBuilder $container)
+    private function registerCache(array $config, ContainerBuilder $container): void
     {
         switch ($config['cache_adapter']) {
             case 'filesystem':
                 $adapterDef = $container->getDefinition('reva2_jsonapi.cache_adapter_filesystem');
-                $adapterDef->setArgument(0, $config['cache_dir']);
+                $adapterDef->setArgument(0, '');
+                $adapterDef->setArgument(1, 0);
+                $adapterDef->setArgument(2, $config['cache_dir']);
                 break;
 
             case 'void':
@@ -80,11 +82,11 @@ class Reva2JsonApiExtension extends Extension
      * @param array $config
      * @param ContainerBuilder $container
      */
-    private function configureListener(array $config, ContainerBuilder $container)
+    private function configureListener(array $config, ContainerBuilder $container): void
     {
         $definition = $container->getDefinition('reva2_jsonapi.listener');
         $definition->setArgument(
-            2,
+            1,
             [
                 'decoders' => $config['decoders'],
                 'encoders' => $config['encoders']
@@ -92,7 +94,7 @@ class Reva2JsonApiExtension extends Extension
         );
     }
 
-    private function cofigureSchemaContainer(array $config, ContainerBuilder $container)
+    private function configureSchemaContainer(array $config, ContainerBuilder $container): void
     {
         $definition = $container->getDefinition('reva2_jsonapi.schemas_container');
         $definition->setArgument(1, $config['schemas']);

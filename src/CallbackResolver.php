@@ -27,7 +27,7 @@ class CallbackResolver implements CallbackResolverInterface
     /**
      * @var ContainerInterface
      */
-    protected $container;
+    protected ContainerInterface $container;
 
     /**
      * Constructor

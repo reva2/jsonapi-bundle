@@ -47,7 +47,7 @@ class RegisterSchemasPass implements CompilerPassInterface
      * @param ContainerBuilder $container
      * @throws \ReflectionException
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition($this->containerService) && !$container->hasAlias($this->containerService)) {
             return;

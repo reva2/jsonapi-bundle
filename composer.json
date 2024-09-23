@@ -2,6 +2,8 @@
     "name": "reva2/jsonapi-bundle",
     "description": "JSON API support for your Symfony REST API",
     "type": "symfony-bundle",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "license": "MIT",
     "authors": [
         {
@@ -9,11 +11,10 @@
             "email": "dedsemen@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
-        "php": "^7.2",
-        "symfony/framework-bundle": "^4.3 || ^5.0",
-        "reva2/jsonapi": "^2.0.0"
+        "php": ">=8.2",
+        "symfony/framework-bundle": "^7.0",
+        "reva2/jsonapi": "^3.1"
     },
     "autoload": {
         "psr-4": {

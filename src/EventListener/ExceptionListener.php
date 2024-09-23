@@ -26,7 +26,7 @@ class ExceptionListener
     /**
      * @var EncoderInterface
      */
-    protected $encoder;
+    protected EncoderInterface $encoder;
 
     /**
      * Constructor
