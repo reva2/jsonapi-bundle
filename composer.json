@@ -14,7 +14,7 @@
     "require": {
         "php": ">=8.2",
         "symfony/framework-bundle": "^7.0",
-        "reva2/jsonapi": "^3.1"
+        "reva2/jsonapi": "^3.2"
     },
     "autoload": {
         "psr-4": {
