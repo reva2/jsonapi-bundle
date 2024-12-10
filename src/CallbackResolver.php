@@ -45,7 +45,7 @@ class CallbackResolver implements CallbackResolverInterface
      * @return callable
      * @throws \Exception
      */
-    public function resolveCallback($name)
+    public function resolveCallback(string $name): callable
     {
         $callback = $name;
         if (preg_match(static::SERVICE_PATTERN, $name)) {
