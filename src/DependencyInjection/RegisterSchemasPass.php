@@ -10,7 +10,7 @@
 
 namespace Reva2\JsonApiBundle\DependencyInjection;
 
-use Neomerx\JsonApi\Contracts\Schema\SchemaProviderInterface;
+use Neomerx\JsonApi\Contracts\Schema\SchemaInterface;
 use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -68,11 +68,11 @@ class RegisterSchemasPass implements CompilerPassInterface
                 ));
             }
 
-            if (!$r->isSubclassOf(SchemaProviderInterface::class)) {
+            if (!$r->isSubclassOf(SchemaInterface::class)) {
                 throw new \InvalidArgumentException(sprintf(
                     "Service '%s' must implement interface '%s'",
                     $id,
-                    SchemaProviderInterface::class
+                    SchemaInterface::class
                 ));
             }
 
